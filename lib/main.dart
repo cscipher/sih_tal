@@ -6,17 +6,20 @@ import 'package:sih_tal/controller/dataTrack.c.dart';
 import 'package:sih_tal/theme/theme.dart';
 import 'package:sih_tal/views/dataInfo.view.dart';
 import 'package:sih_tal/views/login.view.dart';
+import 'package:sih_tal/views/signup.view.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-
-@override
+  @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
         title: 'TAL',
         debugShowCheckedModeBanner: false,
         theme: CustomTheme.appTheme,
-        home: const DataInfo());
+        home: const SignupPage());
   }
 }
