@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sih_tal/model/respModel.dart';
+import 'package:sih_tal/utils/logger.dart';
 
 enum Field { humidity, temperature, xcoord, ycoord, gasComp }
 
@@ -37,7 +38,7 @@ class ApiService {
   };
 
   void initState() {
-    print('ApiService initialized');
+    logInfo('ApiService initialized');
   }
 
   int _getFieldId(String f) => _field[f]!;

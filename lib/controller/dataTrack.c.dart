@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:sih_tal/model/respModel.dart';
 import 'package:sih_tal/service/api_service.dart';
+import 'package:sih_tal/utils/logger.dart';
 
 class DataTrackController extends GetxController {
   var fieldData = <ThingSpeakFields>[].obs;
   late ApiService api;
   RxBool isLoading = false.obs;
-  RxInt time = 0.obs;
+  RxBool disposed = false.obs;
 
   firstTimeLoad() async {
     isLoading.value = true;
@@ -23,29 +24,29 @@ class DataTrackController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
+    logInfo('DataTrackController initialized');
     api = Get.put(ApiService());
     firstTimeLoad();
-    print('DataTrackController initialized');
+    Future.delayed(const Duration(seconds: 10), () => getDataFromPoll());
     super.onInit();
   }
 
   fetchAllRemoteFields() async {
     isLoading.value = true;
     var k = await api.httpGetFields();
-
     fieldData.value = k;
-    print(fieldData.value);
-
     isLoading.value = false;
   }
 
   getDataFromPoll() async {
     Timer.periodic(const Duration(seconds: 15), (timer) async {
-      time++;
+      if (disposed.value) {
+        timer.cancel();
+        return;
+      }
       var k = await api.httpGetFields();
       fieldData.value = k;
-      if (time.value > 15) time.value = 0;
     });
   }
 }
