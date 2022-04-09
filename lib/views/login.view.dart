@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:sih_tal/theme/colorPalette.dart';
-import 'package:sih_tal/widgets/buttons.dart';
+import 'package:sih_tal/utils/buttons.dart';
+import 'package:sih_tal/utils/misc.dart';
+import 'package:sih_tal/utils/util_methods.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -52,19 +54,17 @@ class _LoginPageState extends State<LoginPage> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 25),
-                    inputField(
-                        theme: _theme,
+                    Misc(context).inputField(
                         label: 'Email',
                         prefixIcon: Icons.email,
                         controller: _emailController,
-                        onTap: () {}),
+                        validatorFn: (String? x) => isValidEmail(x) ? null : 'Invalid Email',),
                     const SizedBox(height: 10),
-                    inputField(
-                        theme: _theme,
+                    Misc(context).inputField(
                         label: 'Password',
                         prefixIcon: Icons.key,
                         controller: _passwordController,
-                        onTap: () {},
+                        validatorFn: (String? x) {},
                         isPassword: true),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -125,46 +125,9 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Image.asset(
-            'assets/images/sih_logo.png',
-            height: 65,
-            width: 65,
-          ),
-        ),
+        Misc(context).sihLogo(),
+        Misc(context).circleAsset()
       ],
-    );
-  }
-
-  Padding inputField(
-      {required ThemeData theme,
-      required String label,
-      required IconData prefixIcon,
-      required TextEditingController controller,
-      required onTap,
-      bool isPassword = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-      child: TextField(
-        controller: controller,
-        onTap: onTap,
-        obscureText: isPassword,
-        decoration: InputDecoration(
-          prefixIcon: Icon(prefixIcon),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: theme.primaryColor),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-                color: theme.primaryColor.withOpacity(0.3), width: 6.0),
-          ),
-          labelText: label,
-          labelStyle: TextStyle(
-              fontSize: 18,
-              color: theme.textTheme.bodyText1!.color!.withOpacity(0.5)),
-        ),
-      ),
     );
   }
 }
